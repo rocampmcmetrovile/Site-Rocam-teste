@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROCAM — Metroville RP | Portal de Acesso Restrito</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        rocam: {
+                            yellow: '#FFBE00',
+                            gold: '#D4AF37',
+                            dark: '#0B0C10',
+                            card: '#14161D',
+                            hover: '#1E222D',
+                            border: '#2A2E3D',
+                            muted: '#8E95A5',
+                            discord: '#5865F2',
+                            discordHover: '#4752C4'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0C10;
+            color: #E2E8F0;
+        }
+        .font-oswald {
+            font-family: 'Oswald', sans-serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0C10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A2E3D;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FFBE00;
+        }
+        .glow-yellow {
+            box-shadow: 0 0 25px rgba(255, 190, 0, 0.25);
+        }
+        .glow-discord {
+            box-shadow: 0 0 25px rgba(88, 101, 242, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-rocam-dark text-slate-100 min-h-screen flex flex-col md:flex-row overflow-x-hidden" onclick="handleGlobalClick(event)">
+
+    <!-- MANDATORY DISCORD LOGIN PORTAL SCREEN (ACTIVE WHEN NOT AUTHENTICATED) -->
+    <div id="discordLoginPortal" class="fixed inset-0 z-50 bg-rocam-dark flex flex-col items-center justify-center p-4">
+        <!-- Background Grid Effect -->
+        <div class="absolute inset-0 bg-[radial-gradient(#2A2E3D_1px,transparent_1px)] [background-size:24px_24px] opacity-30 pointer-events-none"></div>
+
+        <div class="relative z-10 w-full max-w-md bg-rocam-card border border-rocam-border rounded-3xl p-8 shadow-2xl text-center space-y-6 glow-yellow">
+            <!-- ROCAM Logo Crest -->
+            <div class="relative w-28 h-28 mx-auto">
+                <img src="https://cdn.discordapp.com/attachments/1497661956797235260/1497698955297951907/image.png?ex=6aa11b98&is=6a9fca18&hm=3e03dfcc7edec49b6656e60f751d6fe0b4aa1fb1f176981c5991490ccd48330c&" alt="ROCAM Logo" class="w-full h-full rounded-full object-cover border-4 border-rocam-yellow shadow-xl" onerror="this.src='https://placehold.co/150x150/1e222d/ffbe00?text=ROCAM'">
+                <div class="absolute -bottom-1 -right-1 bg-rocam-discord p-2 rounded-full border-2 border-rocam-card text-white">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <span class="text-[11px] font-extrabold text-rocam-yellow tracking-widest uppercase bg-rocam-yellow/10 px-3 py-1 rounded-full border border-rocam-yellow/30">
+                    SISTEMA RESTRITO • POLÍCIA MILITAR
+                </span>
+                <h1 class="font-oswald text-3xl font-bold tracking-wider text-slate-100 uppercase mt-3">PAINEL ROCAM METROVILLE</h1>
+                <p class="text-xs text-rocam-muted">Para acessar o sistema de controle e relatórios, faça login obrigatório com sua conta do Discord.</p>
+            </div>
+
+            <!-- Login Actions -->
+            <div class="space-y-3 pt-2">
+                <button onclick="loginWithDiscord()" class="w-full py-3.5 px-4 bg-rocam-discord hover:bg-rocam-discordHover text-white font-bold rounded-xl transition-all shadow-lg glow-discord flex items-center justify-center gap-3 text-sm">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                    Entrar com Discord
+                </button>
+
+                <button onclick="toggleDiscordConfigModal()" class="w-full py-2.5 px-4 bg-rocam-hover hover:bg-rocam-border text-rocam-muted hover:text-slate-200 font-semibold rounded-xl text-xs transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="settings" class="w-4 h-4"></i> Configurar Discord Client ID
+                </button>
+            </div>
+
+            <!-- Demo Login Alternative for Testing -->
+            <div class="pt-4 border-t border-rocam-border/60">
+                <button onclick="loginDemoMode()" class="text-[11px] text-rocam-yellow hover:underline font-semibold flex items-center justify-center gap-1 mx-auto">
+                    <i data-lucide="key" class="w-3.5 h-3.5"></i> Entrar em Modo de Teste / Dev Local
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD APP (VISIBLE ONLY WHEN AUTHENTICATED) -->
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="w-full md:w-64 bg-rocam-card border-r border-rocam-border flex-shrink-0 flex flex-col justify-between z-30 transition-all duration-300">
+        <div>
+            <!-- Header Logo with Official ROCAM Crest Image -->
+            <div class="p-4 border-b border-rocam-border flex items-center gap-3">
+                <img src="https://cdn.discordapp.com/attachments/1497661956797235260/1497698955297951907/image.png?ex=6aa11b98&is=6a9fca18&hm=3e03dfcc7edec49b6656e60f751d6fe0b4aa1fb1f176981c5991490ccd48330c&" alt="ROCAM Logo" class="w-12 h-12 rounded-full object-cover border-2 border-rocam-yellow shadow-lg shadow-rocam-yellow/20" onerror="this.src='https://placehold.co/100x100/1e222d/ffbe00?text=ROCAM'">
+                <div>
+                    <h1 class="font-oswald text-xl font-bold tracking-wider text-rocam-yellow leading-none">R.O.C.A.M.</h1>
+                    <p class="text-[10px] text-rocam-muted tracking-widest uppercase font-semibold mt-1">POLÍCIA MILITAR DA CAPITAL</p>
+                </div>
+            </div>
+
+            <!-- Discord Authenticated Profile Summary -->
+            <div class="p-3 bg-rocam-dark/70 border-b border-rocam-border flex items-center justify-between">
+                <div class="flex items-center gap-2.5 overflow-hidden">
+                    <img id="userDiscordAvatar" src="https://placehold.co/100x100/5865f2/ffffff?text=DC" class="w-9 h-9 rounded-full object-cover border border-rocam-discord">
+                    <div class="truncate">
+                        <p id="userDiscordName" class="font-bold text-xs text-slate-100 truncate">Usuário Discord</p>
+                        <span id="userRoleBadge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-400 border border-purple-500/30 uppercase">STAFF</span>
+                    </div>
+                </div>
+                <button onclick="logoutDiscord()" title="Sair do Discord" class="text-rocam-muted hover:text-rose-400 p-1.5 rounded hover:bg-rose-500/10 transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Role Selector Profile Switcher (EXCLUSIVE FOR STAFF) -->
+            <div id="roleSelectorContainer" class="p-4 bg-rocam-dark/50 border-b border-rocam-border transition-all">
+                <div class="flex items-center justify-between mb-1">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-purple-400">👑 Painel Staff — Simular Cargo</label>
+                </div>
+                <div class="relative">
+                    <select id="userRoleSelect" onchange="changeRole(this.value)" class="w-full bg-rocam-hover text-xs font-semibold text-rocam-yellow border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow appearance-none cursor-pointer">
+                        <option value="Staff" selected>👑 Staff (Acesso Total / Master)</option>
+                        <option value="Gestor">⚡ Gestor (Comando)</option>
+                        <option value="Subgestor">🛡️ Subgestor</option>
+                        <option value="Supervisor">🔍 Supervisor</option>
+                        <option value="Elite">⭐ Elite ROCAM</option>
+                        <option value="Graduados">🏍️ Graduado</option>
+                        <option value="Probatórios">🔰 Probatório / Aluno</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-rocam-muted absolute right-2.5 top-3 pointer-events-none"></i>
+                </div>
+                <div class="mt-2 flex items-center justify-between text-[11px]">
+                    <span class="text-rocam-muted">Nível de Acesso:</span>
+                    <span id="roleAccessBadge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">MASTER STAFF</span>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="p-3 space-y-1 text-xs">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-yellow bg-rocam-yellow/10 border border-rocam-yellow/30">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+                </button>
+                <button onclick="switchTab('efetivo')" id="nav-efetivo" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-muted hover:bg-rocam-hover hover:text-slate-200">
+                    <i data-lucide="users" class="w-4 h-4"></i> Hierarquia & Efetivo
+                </button>
+                <button onclick="switchTab('prisionais')" id="nav-prisionais" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-muted hover:bg-rocam-hover hover:text-slate-200">
+                    <i data-lucide="lock" class="w-4 h-4"></i> Prisões com Sucesso
+                </button>
+                <button onclick="switchTab('fardamentos')" id="nav-fardamentos" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-muted hover:bg-rocam-hover hover:text-slate-200">
+                    <i data-lucide="shirt" class="w-4 h-4"></i> Fardamentos ROCAM
+                </button>
+                <button onclick="switchTab('avaliacoes')" id="nav-avaliacoes" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-muted hover:bg-rocam-hover hover:text-slate-200">
+                    <i data-lucide="clipboard-check" class="w-4 h-4"></i> Relatórios de Probatórios
+                </button>
+                <button onclick="switchTab('ausencias')" id="nav-ausencias" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-muted hover:bg-rocam-hover hover:text-slate-200">
+                    <i data-lucide="calendar-off" class="w-4 h-4"></i> Registro de Ausência
+                </button>
+                <button onclick="switchTab('promocoes')" id="nav-promocoes" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-muted hover:bg-rocam-hover hover:text-slate-200">
+                    <i data-lucide="award" class="w-4 h-4"></i> Promoções & Punições
+                </button>
+                <button onclick="switchTab('configuracoes')" id="nav-configuracoes" class="nav-btn supervisor-up-only hidden w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-muted hover:bg-rocam-hover hover:text-slate-200">
+                    <i data-lucide="settings" class="w-4 h-4"></i> Configurar Perguntas
+                </button>
+                <button onclick="switchTab('detalhes-avaliacoes')" id="nav-detalhes-avaliacoes" class="nav-btn supervisor-up-only hidden w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-muted hover:bg-rocam-hover hover:text-slate-200">
+                    <i data-lucide="file-search" class="w-4 h-4"></i> Dossiê de Avaliações
+                </button>
+                <button onclick="switchTab('alteracoes')" id="nav-alteracoes" class="nav-btn supervisor-up-only hidden w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-rocam-muted hover:bg-rocam-hover hover:text-slate-200">
+                    <i data-lucide="history" class="w-4 h-4"></i> Histórico de Alterações
+                </button>
+                <button onclick="switchTab('staff-panel')" id="nav-staff-panel" class="nav-btn staff-only hidden w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors text-purple-400 hover:bg-purple-500/10 border border-purple-500/30">
+                    <i data-lucide="crown" class="w-4 h-4"></i> Painel Staff & Coordenação
+                </button>
+            </nav>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="p-3 border-t border-rocam-border space-y-2">
+            <div class="flex items-center justify-between text-[11px] text-rocam-muted px-2">
+                <span>Salvamento Auto</span>
+                <span class="flex items-center gap-1 text-emerald-400 font-medium"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Ativo</span>
+            </div>
+            <button onclick="resetData()" id="resetDataBtn" class="gestor-subgestor-only hidden w-full flex items-center justify-center gap-2 px-3 py-2 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/20 rounded-lg text-xs font-semibold transition-colors">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Restaurar Dados
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 flex flex-col min-w-0 overflow-y-auto max-h-screen">
+        
+        <!-- Top Header Bar -->
+        <header class="bg-rocam-card border-b border-rocam-border p-4 sticky top-0 z-20 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <img src="https://cdn.discordapp.com/attachments/1497661956797235260/1497698955297951907/image.png?ex=6aa11b98&is=6a9fca18&hm=3e03dfcc7edec49b6656e60f751d6fe0b4aa1fb1f176981c5991490ccd48330c&" class="w-10 h-10 rounded-full border border-rocam-yellow/50 object-cover" onerror="this.src='https://placehold.co/100x100/1e222d/ffbe00?text=ROCAM'">
+                <div>
+                    <h2 class="font-oswald text-lg font-bold text-slate-100 uppercase tracking-wide" id="pageTitle">Dashboard Geral — ROCAM Metroville</h2>
+                    <p class="text-xs text-rocam-muted">Rondas Ostensivas com Apoio de Motocicletas • Metroville RP</p>
+                </div>
+            </div>
+
+            <!-- Quick Action Stats Summary -->
+            <div class="flex items-center gap-3 text-xs">
+                <div class="hidden sm:flex items-center gap-2 bg-rocam-dark/60 border border-rocam-border px-3 py-1.5 rounded-lg">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-rocam-muted">Servidor:</span>
+                    <span class="font-bold text-slate-200">Metroville RP</span>
+                </div>
+                <div class="flex items-center gap-2 bg-rocam-dark/60 border border-rocam-border px-3 py-1.5 rounded-lg">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-rocam-yellow"></i>
+                    <span id="liveClock" class="font-mono text-rocam-yellow font-bold">00:00:00</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic View Content Container -->
+        <div class="p-4 md:p-6 space-y-6 flex-1">
+
+            <!-- TAB 1: DASHBOARD -->
+            <section id="tab-dashboard" class="tab-content space-y-6">
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="bg-rocam-card p-4 rounded-xl border border-rocam-border flex items-center justify-between hover:border-rocam-yellow/50 transition-all">
+                        <div>
+                            <p class="text-xs text-rocam-muted uppercase tracking-wider font-semibold">Efetivo Ativo</p>
+                            <h3 class="text-2xl font-oswald font-bold text-rocam-yellow mt-1" id="stat-efetivo">0</h3>
+                            <p class="text-[11px] text-slate-400 mt-1">Oficiais na ROCAM</p>
+                        </div>
+                        <div class="p-3 bg-rocam-yellow/10 text-rocam-yellow rounded-xl border border-rocam-yellow/20">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-rocam-card p-4 rounded-xl border border-rocam-border flex items-center justify-between hover:border-emerald-500/50 transition-all">
+                        <div>
+                            <p class="text-xs text-rocam-muted uppercase tracking-wider font-semibold">Prisionais Sucesso</p>
+                            <h3 class="text-2xl font-oswald font-bold text-emerald-400 mt-1" id="stat-sucesso">0</h3>
+                            <p class="text-[11px] text-slate-400 mt-1">Operações concluídas</p>
+                        </div>
+                        <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
+                            <i data-lucide="check-circle" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-rocam-card p-4 rounded-xl border border-rocam-border flex items-center justify-between hover:border-rose-500/50 transition-all">
+                        <div>
+                            <p class="text-xs text-rocam-muted uppercase tracking-wider font-semibold">Prisionais Falhos</p>
+                            <h3 class="text-2xl font-oswald font-bold text-rose-400 mt-1" id="stat-falhas">0</h3>
+                            <p class="text-[11px] text-slate-400 mt-1">Fugas ou falhas</p>
+                        </div>
+                        <div class="p-3 bg-rose-500/10 text-rose-400 rounded-xl border border-rose-500/20">
+                            <i data-lucide="x-circle" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-rocam-card p-4 rounded-xl border border-rocam-border flex items-center justify-between hover:border-amber-500/50 transition-all">
+                        <div>
+                            <p class="text-xs text-rocam-muted uppercase tracking-wider font-semibold">Advertências</p>
+                            <h3 class="text-2xl font-oswald font-bold text-amber-400 mt-1" id="stat-advertencias">0</h3>
+                            <p class="text-[11px] text-slate-400 mt-1">Registradas</p>
+                        </div>
+                        <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
+                            <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-rocam-card p-4 rounded-xl border border-rocam-border flex items-center justify-between hover:border-sky-500/50 transition-all">
+                        <div>
+                            <p class="text-xs text-rocam-muted uppercase tracking-wider font-semibold">Ausências Pendentes</p>
+                            <h3 class="text-2xl font-oswald font-bold text-sky-400 mt-1" id="stat-ausencias">0</h3>
+                            <p class="text-[11px] text-slate-400 mt-1">Aguardando análise</p>
+                        </div>
+                        <div class="p-3 bg-sky-500/10 text-sky-400 rounded-xl border border-sky-500/20">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Recent Arrests -->
+                    <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4 lg:col-span-2">
+                        <div class="flex items-center justify-between border-b border-rocam-border pb-3">
+                            <h3 class="font-oswald text-base font-bold text-slate-200 flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-4 h-4 text-rocam-yellow"></i> ÚLTIMOS PRISIONAIS REGISTRADOS
+                            </h3>
+                            <button onclick="switchTab('prisionais')" class="text-xs text-rocam-yellow hover:underline flex items-center gap-1 font-semibold">
+                                Ver Todos <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                        <div id="dashboardRecentArrests" class="space-y-3"></div>
+                    </div>
+
+                    <!-- Rank Breakdown & Recent Promos -->
+                    <div class="space-y-6">
+                        <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                            <h3 class="font-oswald text-base font-bold text-slate-200 flex items-center gap-2 border-b border-rocam-border pb-3">
+                                <i data-lucide="award" class="w-4 h-4 text-rocam-yellow"></i> DISTRIBUIÇÃO POR CARGOS
+                            </h3>
+                            <div id="rankDistributionList" class="space-y-2 text-xs"></div>
+                        </div>
+
+                        <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                            <h3 class="font-oswald text-base font-bold text-slate-200 flex items-center gap-2 border-b border-rocam-border pb-3">
+                                <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i> ÚLTIMAS PROMOÇÕES
+                            </h3>
+                            <div id="dashboardRecentPromos" class="space-y-2 text-xs"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: EFETIVO & HIERARQUIA -->
+            <section id="tab-efetivo" class="tab-content hidden space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 bg-rocam-card p-4 rounded-xl border border-rocam-border">
+                    <div class="relative flex-1 min-w-[240px]">
+                        <i data-lucide="search" class="w-4 h-4 text-rocam-muted absolute left-3 top-3"></i>
+                        <input type="text" id="searchEfetivo" oninput="renderEfetivo()" placeholder="Buscar oficial por Nome, Passaporte ID ou Badge..." class="w-full bg-rocam-dark border border-rocam-border text-xs rounded-lg pl-9 pr-3 py-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                    </div>
+                    <button onclick="openModal('modalOfficer')" class="supervisor-up-only flex items-center gap-2 px-4 py-2.5 bg-rocam-yellow text-rocam-dark hover:bg-yellow-400 rounded-lg text-xs font-bold transition-all shadow-md shadow-rocam-yellow/10">
+                        <i data-lucide="user-plus" class="w-4 h-4"></i> Adicionar Novo Oficial
+                    </button>
+                </div>
+
+                <div id="hierarchyRoster" class="space-y-6"></div>
+            </section>
+
+            <!-- TAB 3: PRISÕES COM SUCESSO -->
+            <section id="tab-prisionais" class="tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                        <div class="border-b border-rocam-border pb-3">
+                            <h3 class="font-oswald text-base font-bold text-rocam-yellow flex items-center gap-2">
+                                <i data-lucide="plus-circle" class="w-5 h-5"></i> Novo Registro Prisional
+                            </h3>
+                            <p class="text-xs text-rocam-muted">Insira os dados da ocorrência e selecione os oficiais participantes.</p>
+                        </div>
+
+                        <form id="formArrest" onsubmit="saveArrest(event)" class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">Nome da QRU *</label>
+                                <input type="text" id="arrestQRU" required placeholder="Ex: Roubo ao Banco Central" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Passaporte ID Resp. *</label>
+                                    <input type="text" id="arrestPassaporte" required placeholder="Ex: 18492" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Nº do B.O *</label>
+                                    <input type="text" id="arrestBO" required placeholder="Ex: BO-2026-90412" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Unidade PMC *</label>
+                                    <input type="text" id="arrestUnidade" required value="ROCAM - VTR / Moto" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Resultado *</label>
+                                    <select id="arrestOutcome" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                        <option value="Sucesso">✅ Sucesso (Preso)</option>
+                                        <option value="Sem Sucesso">❌ Sem Sucesso (Fuga)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">URL da Foto do Veículo Apreendido</label>
+                                <input type="url" id="arrestImage" placeholder="Ex: https://imgur.com/foto-veiculo.jpg" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                            </div>
+
+                            <div class="relative">
+                                <label class="block font-semibold text-slate-300 mb-1">Oficiais Participantes *</label>
+                                <div id="selectedOfficersTags" class="flex flex-wrap gap-1.5 p-2 bg-rocam-dark border border-rocam-border rounded-lg mb-2 min-h-[42px] items-center">
+                                    <span class="text-rocam-muted text-[11px] italic" id="noOfficerPlaceholder">Nenhum oficial selecionado ainda...</span>
+                                </div>
+
+                                <div class="relative">
+                                    <input type="text" id="officerSearchInput" onfocus="openOfficerDropdown()" oninput="filterOfficerDropdown()" placeholder="🔍 Filtrar oficiais por Nome ou ID..." class="w-full bg-rocam-hover border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow text-xs">
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-rocam-muted absolute right-3 top-3 pointer-events-none"></i>
+                                </div>
+
+                                <div id="officerDropdownMenu" class="absolute left-0 right-0 top-full mt-1 bg-rocam-card border border-rocam-yellow/40 rounded-xl shadow-2xl z-50 hidden max-h-52 overflow-y-auto p-1.5 space-y-1"></div>
+                            </div>
+
+                            <button type="submit" class="w-full py-2.5 bg-rocam-yellow hover:bg-yellow-400 text-rocam-dark font-bold rounded-lg transition-all shadow-md shadow-rocam-yellow/10 flex items-center justify-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4"></i> Cadastrar Registro Prisional
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4 lg:col-span-2">
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-rocam-border pb-3">
+                            <h3 class="font-oswald text-base font-bold text-slate-200 flex items-center gap-2">
+                                <i data-lucide="database" class="w-5 h-5 text-rocam-yellow"></i> HISTÓRICO DE OCORRÊNCIAS PRISIONAIS
+                            </h3>
+                            <input type="text" id="searchArrests" oninput="renderArrests()" placeholder="Filtrar por QRU, BO ou ID..." class="bg-rocam-dark border border-rocam-border text-xs rounded-lg px-3 py-1.5 text-slate-200 outline-none focus:border-rocam-yellow w-full sm:w-64">
+                        </div>
+
+                        <div id="arrestsList" class="space-y-3"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: FARDAMENTOS ROCAM -->
+            <section id="tab-fardamentos" class="tab-content hidden space-y-6">
+                <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-oswald text-xl font-bold text-rocam-yellow flex items-center gap-2">
+                            <i data-lucide="shirt" class="w-6 h-6"></i> CATÁLOGO OFICIAL DE FARDAMENTOS ROCAM
+                        </h3>
+                        <p class="text-xs text-rocam-muted">Códigos de peças das lojas e imagens dos fardamentos oficiais da ROCAM.</p>
+                    </div>
+                    <button onclick="openAddUniformModal()" class="supervisor-up-only flex items-center gap-2 px-4 py-2 bg-rocam-yellow text-rocam-dark font-bold text-xs rounded-lg hover:bg-yellow-400 transition-all shadow-md">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Novo Fardamento
+                    </button>
+                </div>
+
+                <div id="uniformsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </section>
+
+            <!-- TAB 5: RELATÓRIOS DE PROBATÓRIOS -->
+            <section id="tab-avaliacoes" class="tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                        <div class="border-b border-rocam-border pb-3">
+                            <span class="text-[10px] font-bold text-rocam-yellow uppercase tracking-wider bg-rocam-yellow/10 px-2 py-0.5 rounded border border-rocam-yellow/20">PASSO 1: ALUNO / PROBATÓRIO</span>
+                            <h3 class="font-oswald text-base font-bold text-slate-100 mt-1 flex items-center gap-2">
+                                <i data-lucide="send" class="w-5 h-5 text-rocam-yellow"></i> Solicitar Avaliação de Patrulha (PTR)
+                            </h3>
+                            <p class="text-xs text-rocam-muted">O probatório preenche os horários da patrulha e solicita avaliação.</p>
+                        </div>
+
+                        <form id="formStudentEvalRequest" onsubmit="submitEvalRequest(event)" class="space-y-3 text-xs">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Nome do Probatório *</label>
+                                    <input type="text" id="reqStudentName" required placeholder="Ex: Gabriel Rocha" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Passaporte ID *</label>
+                                    <input type="text" id="reqStudentPassport" required placeholder="Ex: 50391" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Horário Início *</label>
+                                    <input type="time" id="reqStartTime" required class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Horário Fim *</label>
+                                    <input type="time" id="reqEndTime" required class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Data da Patrulha *</label>
+                                    <input type="date" id="reqDate" required class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Unidade *</label>
+                                    <input type="text" id="reqDept" required value="ROCAM - Módulo Motociclista" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">Oficial Responsável / Instrutor *</label>
+                                <input type="text" id="reqEvaluatorTarget" required placeholder="Ex: Lucas Santos (ID: 18492)" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                            </div>
+
+                            <button type="submit" class="w-full py-2.5 bg-rocam-yellow text-rocam-dark font-bold rounded-lg hover:bg-yellow-400 transition-all shadow-md flex items-center justify-center gap-2">
+                                <i data-lucide="send" class="w-4 h-4"></i> Enviar Solicitação
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                        <div class="border-b border-rocam-border pb-3 flex justify-between items-center">
+                            <div>
+                                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">PASSO 2: SOLICITAÇÕES PENDENTES DE AVALIAÇÃO</span>
+                                <h3 class="font-oswald text-base font-bold text-slate-100 mt-1 flex items-center gap-2">
+                                    <i data-lucide="clock" class="w-5 h-5 text-emerald-400"></i> Fila de Patrulhas para Avaliar
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div id="pendingEvalListContainer" class="space-y-3 max-h-[420px] overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+
+                <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                    <div class="border-b border-rocam-border pb-3">
+                        <h3 class="font-oswald text-base font-bold text-slate-200 flex items-center gap-2">
+                            <i data-lucide="folder" class="w-5 h-5 text-rocam-yellow"></i> HISTÓRICO DE RELATÓRIOS CONCLUÍDOS DA ROCAM
+                        </h3>
+                    </div>
+                    <div id="completedEvaluationsList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+            </section>
+
+            <!-- TAB 6: AUSÊNCIAS -->
+            <section id="tab-ausencias" class="tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                        <div class="border-b border-rocam-border pb-3">
+                            <h3 class="font-oswald text-base font-bold text-rocam-yellow flex items-center gap-2">
+                                <i data-lucide="calendar-plus" class="w-5 h-5"></i> Solicitar Ausência / Licença
+                            </h3>
+                        </div>
+
+                        <form id="formAbsence" onsubmit="saveAbsence(event)" class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">Nome do Oficial *</label>
+                                <input type="text" id="absOfficer" required placeholder="Ex: Lucas Santos" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">Passaporte ID *</label>
+                                <input type="text" id="absPassport" required placeholder="Ex: 18492" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Data Início *</label>
+                                    <input type="date" id="absStartDate" required class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-300 mb-1">Data Término *</label>
+                                    <input type="date" id="absEndDate" required class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">Motivo Detalhado *</label>
+                                <textarea id="absReason" required rows="3" placeholder="Motivos de ausência..." class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-2.5 bg-rocam-yellow hover:bg-yellow-400 text-rocam-dark font-bold rounded-lg transition-all shadow-md shadow-rocam-yellow/10 flex items-center justify-center gap-2">
+                                <i data-lucide="send" class="w-4 h-4"></i> Enviar Pedido
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4 lg:col-span-2">
+                        <div class="border-b border-rocam-border pb-3 flex justify-between items-center">
+                            <h3 class="font-oswald text-base font-bold text-slate-200 flex items-center gap-2">
+                                <i data-lucide="clock" class="w-5 h-5 text-rocam-yellow"></i> SOLICITAÇÕES DE AUSÊNCIA
+                            </h3>
+                        </div>
+
+                        <div id="absencesList" class="space-y-3"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 7: PROMOÇÕES -->
+            <section id="tab-promocoes" class="tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-rocam-border pb-3">
+                            <div>
+                                <h3 class="font-oswald text-base font-bold text-emerald-400 flex items-center gap-2">
+                                    <i data-lucide="trending-up" class="w-5 h-5"></i> PROMOÇÕES
+                                </h3>
+                            </div>
+                            <button onclick="openModal('modalPromoRequest')" class="px-3 py-1.5 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/30 rounded-lg text-xs font-bold transition-colors">
+                                + Solicitar Promoção
+                            </button>
+                        </div>
+
+                        <div id="promotionsList" class="space-y-3"></div>
+                    </div>
+
+                    <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                        <div class="flex items-center justify-between border-b border-rocam-border pb-3">
+                            <div>
+                                <h3 class="font-oswald text-base font-bold text-amber-400 flex items-center gap-2">
+                                    <i data-lucide="alert-octagon" class="w-5 h-5"></i> REGISTRO DE ADVERTÊNCIAS
+                                </h3>
+                            </div>
+                            <button onclick="openModal('modalWarning')" class="supervisor-up-only px-3 py-1.5 bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 border border-amber-500/30 rounded-lg text-xs font-bold transition-colors">
+                                + Aplicar Adv
+                            </button>
+                        </div>
+                        <div id="warningsList" class="space-y-3"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 8: CONFIGURAÇÕES DE PERGUNTAS -->
+            <section id="tab-configuracoes" class="tab-content hidden space-y-6">
+                <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-6">
+                    <div class="border-b border-rocam-border pb-3 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-oswald text-lg font-bold text-rocam-yellow flex items-center gap-2">
+                                <i data-lucide="edit-3" class="w-5 h-5"></i> CONFIGURAR PERGUNTAS DO QUESTIONÁRIO
+                            </h3>
+                        </div>
+                        <button onclick="addQuestionPrompt()" class="supervisor-up-only px-4 py-2 bg-rocam-yellow text-rocam-dark font-bold text-xs rounded-lg hover:bg-yellow-400">
+                            + Nova Pergunta
+                        </button>
+                    </div>
+
+                    <div id="questionsEditList" class="space-y-3"></div>
+                </div>
+            </section>
+
+            <!-- TAB 9: DOSSIÊ DE AVALIAÇÕES -->
+            <section id="tab-detalhes-avaliacoes" class="tab-content hidden space-y-6">
+                <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-6">
+                    <div class="border-b border-rocam-border pb-3 flex flex-wrap justify-between items-center gap-2">
+                        <div>
+                            <h3 class="font-oswald text-lg font-bold text-rocam-yellow flex items-center gap-2">
+                                <i data-lucide="file-search" class="w-5 h-5"></i> DOSSIÊ DE AVALIAÇÕES DETALHADAS DOS PROBATÓRIOS
+                            </h3>
+                        </div>
+                        <input type="text" id="searchDetailedEvals" oninput="renderDetailedEvaluations()" placeholder="Filtrar por Aluno..." class="bg-rocam-dark border border-rocam-border text-xs rounded-lg px-3 py-2 text-slate-200 outline-none focus:border-rocam-yellow w-full sm:w-64">
+                    </div>
+
+                    <div id="detailedEvaluationsContainer" class="space-y-4"></div>
+                </div>
+            </section>
+
+            <!-- TAB 10: LOGS DE AUDITORIA -->
+            <section id="tab-alteracoes" class="tab-content hidden space-y-6">
+                <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-6">
+                    <div class="border-b border-rocam-border pb-4 flex flex-wrap justify-between items-center gap-4">
+                        <div>
+                            <h3 class="font-oswald text-xl font-bold text-slate-100 flex items-center gap-2">
+                                <i data-lucide="history" class="w-6 h-6 text-rocam-yellow"></i> HISTÓRICO DE ÚLTIMAS ALTERAÇÕES & LOGS
+                            </h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="searchLogsInput" oninput="renderActivityLogs()" placeholder="Filtrar logs..." class="bg-rocam-dark border border-rocam-border text-xs rounded-lg px-3 py-2 text-slate-200 outline-none focus:border-rocam-yellow w-48 sm:w-64">
+                            <button onclick="clearActivityLogs()" class="gestor-subgestor-only hidden px-3 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 rounded-lg text-xs font-bold transition-all flex items-center gap-1">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Limpar Logs
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <button onclick="filterLogsCategory('TODOS')" class="log-filter-btn px-3 py-1.5 rounded-lg font-bold bg-rocam-yellow text-rocam-dark border border-rocam-yellow transition-all">Todos</button>
+                        <button onclick="filterLogsCategory('OFICIAL')" class="log-filter-btn px-3 py-1.5 rounded-lg font-medium bg-rocam-hover text-slate-300 border border-rocam-border hover:border-rocam-yellow/50 transition-all">Oficiais</button>
+                        <button onclick="filterLogsCategory('PRISÃO')" class="log-filter-btn px-3 py-1.5 rounded-lg font-medium bg-rocam-hover text-slate-300 border border-rocam-border hover:border-rocam-yellow/50 transition-all">Prisões</button>
+                        <button onclick="filterLogsCategory('FARDAMENTO')" class="log-filter-btn px-3 py-1.5 rounded-lg font-medium bg-rocam-hover text-slate-300 border border-rocam-border hover:border-rocam-yellow/50 transition-all">Fardamentos</button>
+                        <button onclick="filterLogsCategory('AVALIAÇÃO')" class="log-filter-btn px-3 py-1.5 rounded-lg font-medium bg-rocam-hover text-slate-300 border border-rocam-border hover:border-rocam-yellow/50 transition-all">Avaliações</button>
+                        <button onclick="filterLogsCategory('STAFF')" class="log-filter-btn px-3 py-1.5 rounded-lg font-medium bg-rocam-hover text-slate-300 border border-rocam-border hover:border-rocam-yellow/50 transition-all">Staff</button>
+                    </div>
+
+                    <div id="activityLogsFeed" class="space-y-3 max-h-[600px] overflow-y-auto pr-1"></div>
+                </div>
+            </section>
+
+            <!-- TAB 11: STAFF PANEL -->
+            <section id="tab-staff-panel" class="tab-content hidden space-y-6">
+                <div class="bg-rocam-card p-5 rounded-xl border border-purple-500/40 space-y-4 shadow-xl">
+                    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-rocam-border pb-4">
+                        <div>
+                            <span class="px-2.5 py-1 rounded text-[10px] font-bold bg-purple-500/20 text-purple-400 border border-purple-500/40 uppercase tracking-widest">
+                                👑 ÁREA RESTRITA — STAFF MASTER
+                            </span>
+                            <h3 class="font-oswald text-xl font-bold text-slate-100 mt-2 flex items-center gap-2">
+                                <i data-lucide="crown" class="w-6 h-6 text-purple-400"></i> CENTRAL DE COORDENAÇÃO & GERENCIAMENTO DA STAFF
+                            </h3>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button onclick="exportJSONData()" class="px-3 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
+                                <i data-lucide="download" class="w-4 h-4"></i> Exportar Backup JSON
+                            </button>
+                            <label class="px-3 py-2 bg-rocam-hover hover:bg-rocam-border text-slate-200 border border-rocam-border rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+                                <i data-lucide="upload" class="w-4 h-4 text-purple-400"></i> Importar JSON
+                                <input type="file" id="importJSONFile" onchange="importJSONData(event)" accept=".json" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs pt-2">
+                        <div class="bg-rocam-dark/70 p-3.5 rounded-xl border border-rocam-border">
+                            <p class="text-rocam-muted uppercase tracking-wider text-[10px] font-bold">Membros Staff Registrados</p>
+                            <h4 class="text-2xl font-oswald font-bold text-purple-400 mt-1" id="statStaffCount">0</h4>
+                        </div>
+                        <div class="bg-rocam-dark/70 p-3.5 rounded-xl border border-rocam-border">
+                            <p class="text-rocam-muted uppercase tracking-wider text-[10px] font-bold">Total de Oficiais no Banco</p>
+                            <h4 class="text-2xl font-oswald font-bold text-rocam-yellow mt-1" id="statStaffTotalOfficers">0</h4>
+                        </div>
+                        <div class="bg-rocam-dark/70 p-3.5 rounded-xl border border-rocam-border">
+                            <p class="text-rocam-muted uppercase tracking-wider text-[10px] font-bold">Total de Ocorrências Registradas</p>
+                            <h4 class="text-2xl font-oswald font-bold text-emerald-400 mt-1" id="statStaffTotalArrests">0</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-rocam-card p-5 rounded-xl border border-rocam-border space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-rocam-border pb-3">
+                        <div>
+                            <h3 class="font-oswald text-base font-bold text-slate-100 flex items-center gap-2">
+                                <i data-lucide="shield-alert" class="w-5 h-5 text-purple-400"></i> INTEGRANTES DA EQUIPE STAFF
+                            </h3>
+                        </div>
+                        <button onclick="openModal('modalStaffMember')" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-lg transition-all shadow-md shadow-purple-600/20 flex items-center gap-2">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i> Adicionar Novo Staff
+                        </button>
+                    </div>
+
+                    <div id="staffMembersRosterContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- MODALS SECTION -->
+    
+    <!-- Modal: Evaluate Student PTR Questionnaire -->
+    <div id="modalEvalStudent" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-rocam-card border border-rocam-border w-full max-w-xl rounded-2xl p-5 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-rocam-border pb-3">
+                <div>
+                    <h3 class="font-oswald text-base font-bold text-rocam-yellow">Ficha de Avaliação de Probatório (Notas 0-10)</h3>
+                    <p class="text-xs text-rocam-muted" id="evalModalSubtitle">Avalie a atuação do aluno durante a PTR.</p>
+                </div>
+                <button onclick="closeModal('modalEvalStudent')" class="text-rocam-muted hover:text-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <form id="formActivePTR" onsubmit="finalizeEvaluation(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="activeEvalReqId">
+
+                <div class="p-3 bg-rocam-dark/70 rounded-lg border border-rocam-border/60 text-[11px] space-y-1">
+                    <p><strong class="text-slate-300">Aluno / Probatório:</strong> <span id="dispStudent">--</span></p>
+                    <p><strong class="text-slate-300">Horário:</strong> <span id="dispHours">--</span> | <strong class="text-slate-300">Data:</strong> <span id="dispDate">--</span></p>
+                    <p><strong class="text-slate-300">Unidade:</strong> <span id="dispDept">--</span></p>
+                    <p><strong class="text-slate-300">Avaliador Indicado:</strong> <span id="dispEvaluator" class="text-rocam-yellow font-bold">--</span></p>
+                </div>
+
+                <div class="border-t border-rocam-border pt-3 space-y-3">
+                    <h4 class="font-oswald text-xs font-bold text-slate-200 uppercase">Questionário de Avaliação</h4>
+                    <div id="questionnaireContainer" class="space-y-2.5"></div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Observações do Avaliador / Parecer Final</label>
+                    <textarea id="evalNotes" rows="3" placeholder="Ex: Excelente pilotagem em comboio..." class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 text-slate-200 outline-none focus:border-rocam-yellow"></textarea>
+                </div>
+
+                <div class="flex gap-2 pt-2 border-t border-rocam-border">
+                    <button type="button" onclick="closeModal('modalEvalStudent')" class="w-1/3 py-2.5 bg-rocam-hover text-slate-300 font-bold rounded-lg hover:bg-rocam-border">Cancelar</button>
+                    <button type="submit" class="w-2/3 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all shadow-md flex items-center justify-center gap-2">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i> Finalizar e Salvar Avaliação
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Discord OAuth App Configuration -->
+    <div id="modalDiscordConfig" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-rocam-card border border-rocam-discord w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-rocam-border pb-3">
+                <h3 class="font-oswald text-base font-bold text-rocam-discord flex items-center gap-2">
+                    <i data-lucide="settings" class="w-5 h-5"></i> Configuração do Discord Client ID
+                </h3>
+                <button onclick="toggleDiscordConfigModal()" class="text-rocam-muted hover:text-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Discord Application Client ID *</label>
+                    <input type="text" id="discordClientIdInput" placeholder="Ex: 123456789012345678" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-discord font-mono">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Redirect URI Automático (Copie para o Developer Portal)</label>
+                    <input type="text" id="discordRedirectUriDisplay" readonly class="w-full bg-rocam-dark/70 border border-rocam-border rounded-lg p-2.5 outline-none font-mono text-[11px] text-rocam-yellow">
+                </div>
+                <button onclick="saveDiscordConfig()" class="w-full py-2.5 bg-rocam-discord hover:bg-rocam-discordHover text-white font-bold rounded-lg transition-all shadow-md">
+                    Salvar Configuração do Discord
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add / Edit Uniform -->
+    <div id="modalUniform" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-rocam-card border border-rocam-border w-full max-w-lg rounded-2xl p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-rocam-border pb-3">
+                <h3 class="font-oswald text-base font-bold text-rocam-yellow" id="modalUniformTitle">Gerenciar Fardamento ROCAM</h3>
+                <button onclick="closeModal('modalUniform')" class="text-rocam-muted hover:text-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="saveUniform(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="uniId">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Título do Fardamento *</label>
+                    <input type="text" id="uniTitle" required placeholder="Ex: Uniforme Probatório" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Badge de Categoria / Tag *</label>
+                    <input type="text" id="uniBadge" required placeholder="Ex: PROBATÓRIO" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">URL da Imagem da Foto *</label>
+                    <input type="text" id="uniImage" required placeholder="Cole o link da imagem" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Lista Detalhada de Lojas e Peças *</label>
+                    <textarea id="uniDetails" required rows="6" placeholder="Especificações..." class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 font-mono text-[11px] outline-none focus:border-rocam-yellow"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-rocam-yellow text-rocam-dark font-bold rounded-lg hover:bg-yellow-400">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add Officer -->
+    <div id="modalOfficer" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-rocam-card border border-rocam-border w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-rocam-border pb-3">
+                <h3 class="font-oswald text-base font-bold text-rocam-yellow">Cadastrar Novo Oficial ROCAM</h3>
+                <button onclick="closeModal('modalOfficer')" class="text-rocam-muted hover:text-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="saveOfficer(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Nome do Oficial *</label>
+                    <input type="text" id="offName" required placeholder="Ex: Lucas Santos" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Passaporte ID *</label>
+                        <input type="text" id="offPassport" required placeholder="Ex: 18492" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Número Badge *</label>
+                        <input type="text" id="offBadge" required placeholder="Ex: #102" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Cargo / Patente ROCAM *</label>
+                    <select id="offRank" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                        <option value="Gestor">⚡ Gestor (Comando)</option>
+                        <option value="Subgestor">🛡️ Subgestor</option>
+                        <option value="Supervisor">🔍 Supervisor</option>
+                        <option value="Elite">⭐ Elite</option>
+                        <option value="Graduados">🏍️ Graduado</option>
+                        <option value="Probatórios" selected>🔰 Probatório / Aluno</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Status de Serviço</label>
+                    <select id="offStatus" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                        <option value="Ativo">🟢 Ativo</option>
+                        <option value="Licença">🟡 Em Licença</option>
+                        <option value="Inativo">🔴 Inativo</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-rocam-yellow text-rocam-dark font-bold rounded-lg hover:bg-yellow-400">Salvar Oficial</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Request Promotion -->
+    <div id="modalPromoRequest" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-rocam-card border border-rocam-border w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-rocam-border pb-3">
+                <h3 class="font-oswald text-base font-bold text-emerald-400">Solicitar Promoção de Patente</h3>
+                <button onclick="closeModal('modalPromoRequest')" class="text-rocam-muted hover:text-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="savePromotionRequest(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Selecionar Oficial Candidato *</label>
+                    <select id="promoReqOfficerSelect" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow"></select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Cargo Pretendido *</label>
+                    <select id="promoReqNewRank" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                        <option value="Gestor">⚡ Gestor</option>
+                        <option value="Subgestor">🛡️ Subgestor</option>
+                        <option value="Supervisor">🔍 Supervisor</option>
+                        <option value="Elite">⭐ Elite</option>
+                        <option value="Graduados">🏍️ Graduado</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Justificativa da Solicitação *</label>
+                    <textarea id="promoReqReason" required rows="3" placeholder="Justificativa..." class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-emerald-500 text-slate-950 font-bold rounded-lg hover:bg-emerald-400">Enviar Pedido</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add Warning -->
+    <div id="modalWarning" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-rocam-card border border-rocam-border w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-rocam-border pb-3">
+                <h3 class="font-oswald text-base font-bold text-amber-400">Aplicar Advertência Disciplinar</h3>
+                <button onclick="closeModal('modalWarning')" class="text-rocam-muted hover:text-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="saveWarning(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Selecionar Oficial *</label>
+                    <select id="warnOfficerSelect" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow"></select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Nível de Gravidade</label>
+                    <select id="warnLevel" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow">
+                        <option value="Leve">🟡 Leve (Adv Verbal)</option>
+                        <option value="Média">🟠 Média (Adv Escrita)</option>
+                        <option value="Grave">🔴 Grave (Suspensão)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Motivo da Advertência *</label>
+                    <textarea id="warnReason" required rows="3" placeholder="Motivo..." class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-yellow"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-amber-500 text-slate-950 font-bold rounded-lg hover:bg-amber-400">Registrar Advertência</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add / Edit Staff Member -->
+    <div id="modalStaffMember" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-rocam-card border border-purple-500/40 w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-rocam-border pb-3">
+                <h3 class="font-oswald text-base font-bold text-purple-400 flex items-center gap-2">
+                    <i data-lucide="crown" class="w-5 h-5"></i> Cadastrar Integrante da Staff
+                </h3>
+                <button onclick="closeModal('modalStaffMember')" class="text-rocam-muted hover:text-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="saveStaffMember(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Nome do Staff *</label>
+                    <input type="text" id="stfName" required placeholder="Ex: Gabriel Silva" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-purple-400">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Passaporte ID *</label>
+                        <input type="text" id="stfPassport" required placeholder="Ex: 1001" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-purple-400">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Discord Tag</label>
+                        <input type="text" id="stfDiscord" placeholder="Ex: @gabriel_staff" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-purple-400">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Cargo na Staff *</label>
+                    <select id="stfCargo" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-purple-400">
+                        <option value="Dono / Fundador">👑 Dono / Fundador</option>
+                        <option value="Administrador Master">⚡ Administrador Master</option>
+                        <option value="Gestor Staff">🛡️ Gestor Staff</option>
+                        <option value="Moderador Staff">🔍 Moderador Staff</option>
+                        <option value="Suporte Staff">💬 Suporte Staff</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg transition-all shadow-md">
+                    Salvar Integrante da Staff
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CUSTOM TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- JAVASCRIPT LOGIC ENGINE -->
+    <script>
+        /* DEFAULT DATA STRUCTURES */
+        const DEFAULT_UNIFORMS = [
+            {
+                id: "uni_1",
+                title: "Uniforme Probatório",
+                badge: "PROBATÓRIO",
+                image: "https://placehold.co/300x500/1e222d/ffbe00?text=PROBATORIO",
+                details: "LOJA POLICIAL\n• Jaqueta: 759 - 1\n• Braço: 223 - 2\n• Calça: 298 - 2\n• Colete: 95\n• Acessório: 298\n\nLOJA NORMAL\n• Chapéu: 62 - 9"
+            },
+            {
+                id: "uni_2",
+                title: "Uniforme Probatório (VIP)",
+                badge: "PROBATÓRIO VIP",
+                image: "https://placehold.co/300x500/1e222d/ffbe00?text=PROBATORIO+VIP",
+                details: "LOJA VIP\n• Jaqueta: 763 - 1\n• Braços: 228 - 10\n• Calça: 300 - 6\n• Sapatos: 223 - 4\n\nLOJA POLICIAL / NORMAL\n• Coletes: 95\n• Acessório: 298\n• Chapéu (Normal): 62 - 9"
+            },
+            {
+                id: "uni_3",
+                title: "Uniforme Graduado",
+                badge: "GRADUADO",
+                image: "https://placehold.co/300x500/1e222d/ffbe00?text=GRADUADO",
+                details: "LOJA POLICIAL\n• Jaqueta: 759 - 9\n• Camiseta: - 15\n• Braço: 226 - 2\n• Calça: 298 - 2\n• Sapato: 222 - 2\n• Colete: 96\n• Chapéus: 230\n• Acessório: 298"
+            },
+            {
+                id: "uni_4",
+                title: "Uniforme Graduado — VIP (Cinza)",
+                badge: "GRADUADO VIP (CINZA)",
+                image: "https://placehold.co/300x500/1e222d/ffbe00?text=GRADUADO+CINZA",
+                details: "LOJA VIP\n• Jaqueta: 763 - 9\n• Braço: 229 - 3\n\nLOJA POLICIAL NORMAL\n• Calça: 298 - 2\n• Sapato: 222 - 2\n• Colete: 96\n• Chapéu: 230\n• Acessório: 298"
+            },
+            {
+                id: "uni_5",
+                title: "Uniforme Graduado — VIP (Camuflado)",
+                badge: "GRADUADO VIP (CAMUFLADO)",
+                image: "https://placehold.co/300x500/1e222d/ffbe00?text=GRADUADO+CAMUFLADO",
+                details: "LOJA VIP\n• Jaqueta: 769 - 21\n• Braço: 229 - 3\n• Calça: 300 - 6\n• Chapéu: 237 - 1\n\nLOJA POLICIAL NORMAL\n• Sapato: 222 - 2\n• Colete: 96\n• Acessório: 298"
+            },
+            {
+                id: "uni_6",
+                title: "Uniforme Elite ROCAM",
+                badge: "ELITE ROCAM",
+                image: "https://live.staticflickr.com/65535/55516633515_cb7f447846_m.jpg",
+                details: "ESPECIFICAÇÃO DE ELITE\n• Fardamento exclusivo dos membros do grupamento Elite ROCAM.\n• Acessórios táticos avançados e capacete camuflado."
+            }
+        ];
+
+        const DEFAULT_QUESTIONS = [
+            "Postura e Conduta Profissional durante a PTR",
+            "Domínio do Código Q e Comunicação via Rádio",
+            "Pilotagem Tática da Motocicleta e Manobras",
+            "Agilidade e Eficiência nas Abordagens / Prisões",
+            "Conhecimento do Código Penal de Metroville"
+        ];
+
+        const DEFAULT_STAFF_MEMBERS = [
+            { id: "stf_1", name: "Gabriel Silva", passport: "1001", discord: "@gabriel_staff", cargo: "Dono / Fundador" },
+            { id: "stf_2", name: "Lucas Santos", passport: "18492", discord: "@corvo_master", cargo: "Administrador Master" }
+        ];
+
+        const DEFAULT_ACTIVITY_LOGS = [
+            { id: "log_init_1", timestamp: new Date().toLocaleDateString('pt-BR') + ' às 10:00', type: "STAFF", title: "Painel ROCAM Inicializado", detail: "Sistema de auditoria ativado com login obrigatório por Discord.", userRole: "Staff" }
+        ];
+
+        let state = {
+            role: "Staff",
+            isStaffMaster: true,
+            discordClientId: "123456789012345678",
+            currentUser: null, // { authenticated: boolean, username: string, avatarUrl: string, id: string }
+            officers: [
+                { id: "18492", name: "Lucas 'Corvo' Santos", passport: "18492", badge: "#101", rank: "Gestor", arrestsCount: 0, warningsCount: 0, status: "Ativo" },
+                { id: "50391", name: "Gabriel 'Falcão' Rocha", passport: "50391", badge: "#102", rank: "Probatórios", arrestsCount: 0, warningsCount: 0, status: "Ativo" }
+            ],
+            staffMembers: [...DEFAULT_STAFF_MEMBERS],
+            arrests: [],
+            evalRequests: [],
+            completedEvals: [],
+            absences: [],
+            promotions: [],
+            warnings: [],
+            uniforms: [...DEFAULT_UNIFORMS],
+            questions: [...DEFAULT_QUESTIONS],
+            activityLogs: [...DEFAULT_ACTIVITY_LOGS]
+        };
+
+        let selectedOfficerIDs = [];
+        let activeLogCategoryFilter = "TODOS";
+
+        /* TOAST NOTIFICATION SYSTEM */
+        function showToast(message, type = "info") {
+            const container = document.getElementById('toastContainer');
+            if(!container) return;
+            const toast = document.createElement('div');
+            
+            const styles = {
+                info: "bg-rocam-card border-rocam-yellow text-rocam-yellow",
+                success: "bg-rocam-card border-emerald-500 text-emerald-400",
+                error: "bg-rocam-card border-rose-500 text-rose-400"
+            };
+
+            toast.className = `p-3.5 rounded-xl border ${styles[type] || styles.info} shadow-2xl text-xs font-bold flex items-center gap-2 pointer-events-auto transition-all transform translate-y-2`;
+            toast.innerHTML = `<span>${message}</span>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        /* DISCORD OAUTH2 MANDATORY AUTHENTICATION ENGINE */
+        function checkDiscordOAuthHash() {
+            const hash = window.location.hash;
+            if (hash && hash.includes('access_token=')) {
+                const params = new URLSearchParams(hash.substring(1));
+                const accessToken = params.get('access_token');
+                if (accessToken) {
+                    fetch('https://discord.com/api/users/@me', {
+                        headers: { authorization: `Bearer ${accessToken}` }
+                    })
+                    .then(res => res.json())
+                    .then(user => {
+                        if (user && user.id) {
+                            const avatarUrl = user.avatar 
+                                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+                                : `https://cdn.discordapp.com/embed/avatars/0.png`;
+
+                            state.currentUser = {
+                                authenticated: true,
+                                id: user.id,
+                                username: user.global_name || user.username,
+                                avatarUrl
+                            };
+                            logActivity("STAFF", "Login Discord", `Usuário ${state.currentUser.username} (ID Discord: ${user.id}) autenticado.`);
+                            saveState();
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                            showToast(`Bem-vindo, ${state.currentUser.username}! Autenticado com sucesso.`, "success");
+                        }
+                    })
+                    .catch(() => showToast("Falha ao validar conta do Discord.", "error"));
+                }
+            }
+        }
+
+        function loginWithDiscord() {
+            const redirectUri = encodeURIComponent(window.location.origin + window.location.pathname);
+            const clientId = state.discordClientId || "123456789012345678";
+            const oauthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
+            window.location.href = oauthUrl;
+        }
+
+        function loginDemoMode() {
+            state.currentUser = {
+                authenticated: true,
+                id: "1000000000000000",
+                username: "Oficial_Demonstracao",
+                avatarUrl: "https://placehold.co/100x100/5865f2/ffffff?text=ROCAM"
+            };
+            saveState();
+            showToast("Acesso concedido em Modo de Teste Local!", "success");
+            checkAuthGuard();
+        }
+
+        function logoutDiscord() {
+            state.currentUser = null;
+            saveState();
+            checkAuthGuard();
+            showToast("Sessão do Discord encerrada.", "info");
+        }
+
+        function checkAuthGuard() {
+            const portal = document.getElementById('discordLoginPortal');
+            if (!state.currentUser || !state.currentUser.authenticated) {
+                if (portal) portal.classList.remove('hidden');
+            } else {
+                if (portal) portal.classList.add('hidden');
+                document.getElementById('userDiscordName').textContent = state.currentUser.username;
+                document.getElementById('userDiscordAvatar').src = state.currentUser.avatarUrl;
+            }
+        }
+
+        function toggleDiscordConfigModal() {
+            const modal = document.getElementById('modalDiscordConfig');
+            if (modal) {
+                document.getElementById('discordClientIdInput').value = state.discordClientId || "";
+                document.getElementById('discordRedirectUriDisplay').value = window.location.origin + window.location.pathname;
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        function saveDiscordConfig() {
+            const id = document.getElementById('discordClientIdInput').value.trim();
+            if (id) {
+                state.discordClientId = id;
+                saveState();
+                toggleDiscordConfigModal();
+                showToast("Configurações do Discord Client ID salvas com sucesso!", "success");
+            }
+        }
+
+        /* AUDITORIA E LOGS */
+        function logActivity(type, title, detail) {
+            if (!state.activityLogs) state.activityLogs = [];
+            const now = new Date();
+            const timestamp = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+            
+            state.activityLogs.unshift({
+                id: 'log_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+                timestamp,
+                type,
+                title,
+                detail,
+                userRole: state.role || 'Sistema'
+            });
+
+            if (state.activityLogs.length > 100) {
+                state.activityLogs = state.activityLogs.slice(0, 100);
+            }
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('rocam_metroville_v7_data');
+            if (saved) {
+                try {
+                    state = JSON.parse(saved);
+                    if(!state.officers) state.officers = [];
+                    if(!state.staffMembers || state.staffMembers.length === 0) state.staffMembers = [...DEFAULT_STAFF_MEMBERS];
+                    if(!state.arrests) state.arrests = [];
+                    if(!state.evalRequests) state.evalRequests = [];
+                    if(!state.completedEvals) state.completedEvals = [];
+                    if(!state.absences) state.absences = [];
+                    if(!state.promotions) state.promotions = [];
+                    if(!state.warnings) state.warnings = [];
+                    if(!state.uniforms || state.uniforms.length === 0) state.uniforms = [...DEFAULT_UNIFORMS];
+                    if(!state.questions || state.questions.length === 0) state.questions = [...DEFAULT_QUESTIONS];
+                    if(!state.activityLogs || state.activityLogs.length === 0) state.activityLogs = [...DEFAULT_ACTIVITY_LOGS];
+                } catch(e) {
+                    console.error("Erro ao carregar dados", e);
+                }
+            } else {
+                saveState();
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('rocam_metroville_v7_data', JSON.stringify(state));
+            updateUI();
+        }
+
+        function resetData() {
+            if (!["Staff", "Gestor", "Subgestor"].includes(state.role)) {
+                showToast("Acesso restrito para Staff, Gestor ou Subgestor!", "error");
+                return;
+            }
+
+            localStorage.removeItem('rocam_metroville_v7_data');
+            state = {
+                role: "Staff",
+                isStaffMaster: true,
+                discordClientId: "123456789012345678",
+                currentUser: state.currentUser,
+                officers: [
+                    { id: "18492", name: "Lucas Santos", passport: "18492", badge: "#101", rank: "Gestor", arrestsCount: 0, warningsCount: 0, status: "Ativo" }
+                ],
+                staffMembers: [...DEFAULT_STAFF_MEMBERS],
+                arrests: [],
+                evalRequests: [],
+                completedEvals: [],
+                absences: [],
+                promotions: [],
+                warnings: [],
+                uniforms: [...DEFAULT_UNIFORMS],
+                questions: [...DEFAULT_QUESTIONS],
+                activityLogs: [...DEFAULT_ACTIVITY_LOGS]
+            };
+            logActivity("SISTEMA", "Painel Restaurado", "Dados zerados e restaurados.");
+            saveState();
+            showToast("Painel ROCAM restaurado com sucesso!", "success");
+        }
+
+        function changeRole(newRole) {
+            state.role = newRole;
+            const badge = document.getElementById('roleAccessBadge');
+            const userRoleBadge = document.getElementById('userRoleBadge');
+
+            const isStaff = newRole === "Staff";
+            const isGestorOrSubgestor = ["Staff", "Gestor", "Subgestor"].includes(newRole);
+            const isSupervisorUp = ["Staff", "Gestor", "Subgestor", "Supervisor"].includes(newRole);
+
+            if (badge) {
+                badge.textContent = isStaff ? "MASTER STAFF" : (isGestorOrSubgestor ? "COMANDO" : (isSupervisorUp ? "SUPERVISOR" : "OFICIAL"));
+            }
+            if (userRoleBadge) {
+                userRoleBadge.textContent = newRole;
+            }
+
+            document.querySelectorAll('.staff-only').forEach(el => {
+                if(isStaff) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            });
+
+            document.querySelectorAll('.gestor-subgestor-only').forEach(el => {
+                if(isGestorOrSubgestor) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            });
+
+            document.querySelectorAll('.supervisor-up-only').forEach(el => {
+                if(isSupervisorUp) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            });
+
+            renderAbsences();
+            renderPromotionsAndWarnings();
+            renderEfetivo();
+            renderUniforms();
+            renderQuestionsEdit();
+            renderStudentEvalModule();
+            renderDetailedEvaluations();
+            renderStaffPanel();
+            renderActivityLogs();
+        }
+
+        function switchTab(tabId) {
+            const isStaff = state.role === "Staff";
+            const isSupervisorUp = ["Staff", "Gestor", "Subgestor", "Supervisor"].includes(state.role);
+
+            if(tabId === 'staff-panel' && !isStaff) {
+                showToast("Acesso restrito exclusivamente a membros da Staff!", "error");
+                return;
+            }
+
+            if((tabId === 'configuracoes' || tabId === 'detalhes-avaliacoes' || tabId === 'alteracoes') && !isSupervisorUp) {
+                showToast("Acesso restrito ao nível de Staff / Supervisor ou superior!", "error");
+                return;
+            }
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-rocam-yellow', 'bg-rocam-yellow/10', 'border', 'border-rocam-yellow/30', 'text-purple-400', 'bg-purple-500/10', 'border-purple-500/30');
+                btn.classList.add('text-rocam-muted');
+            });
+
+            const target = document.getElementById(`tab-${tabId}`);
+            if(target) target.classList.remove('hidden');
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-rocam-muted');
+                if(tabId === 'staff-panel') {
+                    activeBtn.classList.add('text-purple-400', 'bg-purple-500/10', 'border', 'border-purple-500/30');
+                } else {
+                    activeBtn.classList.add('text-rocam-yellow', 'bg-rocam-yellow/10', 'border', 'border-rocam-yellow/30');
+                }
+            }
+
+            if(tabId === 'detalhes-avaliacoes') renderDetailedEvaluations();
+            if(tabId === 'alteracoes') renderActivityLogs();
+            if(tabId === 'staff-panel') renderStaffPanel();
+        }
+
+        function updateUI() {
+            checkAuthGuard();
+            renderDashboard();
+            renderEfetivo();
+            renderArrests();
+            renderUniforms();
+            renderOfficerTags();
+            renderStudentEvalModule();
+            renderAbsences();
+            renderPromotionsAndWarnings();
+            renderQuestionsEdit();
+            renderDetailedEvaluations();
+            renderActivityLogs();
+            renderStaffPanel();
+            populateSelects();
+            if (window.lucide) lucide.createIcons();
+        }
+
+        /* RENDERERS & MAPPING */
+        function filterLogsCategory(cat) {
+            activeLogCategoryFilter = cat;
+            renderActivityLogs();
+        }
+
+        function renderActivityLogs() {
+            const feed = document.getElementById('activityLogsFeed');
+            if (!feed) return;
+
+            const searchInput = document.getElementById('searchLogsInput');
+            const search = searchInput ? searchInput.value.toLowerCase() : '';
+
+            if (!state.activityLogs) state.activityLogs = [];
+
+            let filtered = state.activityLogs.filter(log => {
+                const matchesCat = activeLogCategoryFilter === "TODOS" || log.type === activeLogCategoryFilter;
+                const matchesSearch = log.title.toLowerCase().includes(search) || log.detail.toLowerCase().includes(search);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                feed.innerHTML = `<p class="text-xs text-rocam-muted italic py-10 text-center">Nenhum registro de alteração encontrado.</p>`;
+                return;
+            }
+
+            feed.innerHTML = filtered.map(log => `
+                <div class="p-4 bg-rocam-dark/80 rounded-xl border border-rocam-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rocam-yellow/10 text-rocam-yellow border border-rocam-yellow/30 uppercase">
+                                ${log.type}
+                            </span>
+                            <h4 class="font-bold text-slate-100 text-sm">${log.title}</h4>
+                        </div>
+                        <p class="text-[11px] text-slate-300 mt-1">${log.detail}</p>
+                    </div>
+                    <span class="text-[10px] text-rocam-muted font-mono bg-rocam-hover px-2 py-1 rounded border border-rocam-border self-end sm:self-center">
+                        ⏱️ ${log.timestamp}
+                    </span>
+                </div>
+            `).join('');
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function clearActivityLogs() {
+            state.activityLogs = [];
+            logActivity("SISTEMA", "Logs Limpos", "O histórico de auditoria foi zerado pelo Comando.");
+            saveState();
+            showToast("Logs limpos com sucesso!", "info");
+        }
+
+        function renderStaffPanel() {
+            const rosterContainer = document.getElementById('staffMembersRosterContainer');
+            if(!rosterContainer) return;
+
+            document.getElementById('statStaffCount').textContent = state.staffMembers ? state.staffMembers.length : 0;
+            document.getElementById('statStaffTotalOfficers').textContent = state.officers ? state.officers.length : 0;
+            document.getElementById('statStaffTotalArrests').textContent = state.arrests ? state.arrests.length : 0;
+
+            if(!state.staffMembers || state.staffMembers.length === 0) {
+                rosterContainer.innerHTML = `<p class="text-xs text-rocam-muted italic py-6 col-span-full text-center">Nenhum membro da Staff cadastrado.</p>`;
+                return;
+            }
+
+            rosterContainer.innerHTML = state.staffMembers.map(stf => `
+                <div class="p-4 bg-rocam-dark/90 rounded-xl border border-purple-500/30 flex items-center justify-between text-xs">
+                    <div>
+                        <p class="font-bold text-slate-100">${stf.name}</p>
+                        <p class="text-[10px] text-purple-300/80">${stf.cargo}</p>
+                        <p class="text-[10px] text-rocam-muted font-mono">${stf.discord || 'Sem Discord'}</p>
+                    </div>
+                    <button onclick="deleteStaffMember('${stf.id}')" class="text-rose-400 hover:text-rose-300 p-1.5 rounded hover:bg-rose-500/10">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            if(window.lucide) lucide.createIcons();
+        }
+
+        function saveStaffMember(e) {
+            e.preventDefault();
+            const name = document.getElementById('stfName').value.trim();
+            const passport = document.getElementById('stfPassport').value.trim();
+            const discord = document.getElementById('stfDiscord').value.trim();
+            const cargo = document.getElementById('stfCargo').value;
+
+            if(!state.staffMembers) state.staffMembers = [];
+
+            state.staffMembers.push({ id: 'stf_' + Date.now(), name, passport, discord, cargo });
+            logActivity("STAFF", "Novo Integrante Staff", `Membro ${name} adicionado.`);
+            saveState();
+            closeModal('modalStaffMember');
+            showToast("Membro da Staff adicionado!", "success");
+        }
+
+        function deleteStaffMember(id) {
+            state.staffMembers = state.staffMembers.filter(s => s.id !== id);
+            logActivity("STAFF", "Membro Staff Removido", `ID ${id} removido.`);
+            saveState();
+            showToast("Membro da Staff removido.", "info");
+        }
+
+        function exportJSONData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `backup_rocam_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Backup exportado!", "success");
+        }
+
+        function importJSONData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    state = JSON.parse(e.target.result);
+                    saveState();
+                    showToast("Backup importado com sucesso!", "success");
+                } catch(err) {
+                    showToast("Erro ao ler arquivo de backup JSON.", "error");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function renderDashboard() {
+            document.getElementById('stat-efetivo').textContent = state.officers.length;
+            document.getElementById('stat-sucesso').textContent = state.arrests.filter(a => a.outcome === "Sucesso").length;
+            document.getElementById('stat-falhas').textContent = state.arrests.filter(a => a.outcome === "Sem Sucesso").length;
+            document.getElementById('stat-advertencias').textContent = state.warnings.length;
+            document.getElementById('stat-ausencias').textContent = state.absences.filter(a => a.status === "Pendente").length;
+
+            const recentContainer = document.getElementById('dashboardRecentArrests');
+            if(state.arrests.length === 0) {
+                recentContainer.innerHTML = `<p class="text-xs text-rocam-muted italic py-4 text-center">Nenhum registro prisional cadastrado.</p>`;
+            } else {
+                recentContainer.innerHTML = state.arrests.slice(-4).reverse().map(a => `
+                    <div class="flex items-center justify-between p-3 bg-rocam-dark/60 rounded-lg border border-rocam-border text-xs">
+                        <div>
+                            <p class="font-bold text-slate-100">${a.qru || 'Ocorrência Prisional'}</p>
+                            <p class="text-[10px] text-rocam-muted">B.O: ${a.bo} • Oficiais: ${a.officersIDs}</p>
+                        </div>
+                        <span class="px-2 py-1 rounded text-[10px] font-bold ${a.outcome === 'Sucesso' ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10'}">${a.outcome}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderUniforms() {
+            const container = document.getElementById('uniformsGridContainer');
+            if (!container) return;
+
+            const isSupervisorUp = ["Staff", "Gestor", "Subgestor", "Supervisor"].includes(state.role);
+
+            container.innerHTML = state.uniforms.map((uni) => `
+                <div class="bg-rocam-card rounded-2xl border border-rocam-border overflow-hidden hover:border-rocam-yellow/50 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="relative bg-rocam-dark h-80 flex items-center justify-center p-2 border-b border-rocam-border">
+                            <img src="${uni.image}" class="h-full object-contain rounded-lg" onerror="this.src='https://placehold.co/300x500/1e222d/ffbe00?text=FARDAMENTO'">
+                            <span class="absolute top-3 left-3 bg-rocam-yellow text-rocam-dark font-oswald text-xs font-bold px-2.5 py-1 rounded-md uppercase">${uni.badge || 'ROCAM'}</span>
+                        </div>
+                        <div class="p-4 space-y-3">
+                            <h4 class="font-oswald text-base font-bold text-slate-100">${uni.title}</h4>
+                            <div class="bg-rocam-dark/70 p-3 rounded-xl border border-rocam-border/60 space-y-1 font-mono text-[11px]">
+                                ${uni.details}
+                            </div>
+                        </div>
+                    </div>
+                    ${isSupervisorUp ? `
+                        <div class="p-4 pt-0 flex gap-2 border-t border-rocam-border/40 mt-3">
+                            <button onclick="openEditUniformModal('${uni.id}')" class="flex-1 py-1.5 bg-rocam-yellow/10 text-rocam-yellow border border-rocam-yellow/30 rounded-lg text-xs font-bold">Editar</button>
+                            <button onclick="deleteUniform('${uni.id}')" class="px-3 py-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/30 rounded-lg text-xs font-bold"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+            if(window.lucide) lucide.createIcons();
+        }
+
+        function openAddUniformModal() {
+            document.getElementById('modalUniformTitle').textContent = "Adicionar Novo Fardamento";
+            document.getElementById('uniId').value = "";
+            document.getElementById('uniTitle').value = "";
+            document.getElementById('uniBadge').value = "";
+            document.getElementById('uniImage').value = "";
+            document.getElementById('uniDetails').value = "";
+            openModal('modalUniform');
+        }
+
+        function openEditUniformModal(id) {
+            const uni = state.uniforms.find(u => u.id === id);
+            if (!uni) return;
+            document.getElementById('uniId').value = uni.id;
+            document.getElementById('uniTitle').value = uni.title;
+            document.getElementById('uniBadge').value = uni.badge || "";
+            document.getElementById('uniImage').value = uni.image;
+            document.getElementById('uniDetails').value = uni.details;
+            openModal('modalUniform');
+        }
+
+        function saveUniform(e) {
+            e.preventDefault();
+            const id = document.getElementById('uniId').value;
+            const title = document.getElementById('uniTitle').value.trim();
+            const badge = document.getElementById('uniBadge').value.trim();
+            const image = document.getElementById('uniImage').value.trim();
+            const details = document.getElementById('uniDetails').value.trim();
+
+            if (id) {
+                const index = state.uniforms.findIndex(u => u.id === id);
+                if (index !== -1) state.uniforms[index] = { id, title, badge, image, details };
+            } else {
+                state.uniforms.push({ id: 'uni_' + Date.now(), title, badge, image, details });
+            }
+
+            saveState();
+            closeModal('modalUniform');
+            showToast("Fardamento salvo com sucesso!", "success");
+        }
+
+        function deleteUniform(id) {
+            state.uniforms = state.uniforms.filter(u => u.id !== id);
+            saveState();
+            showToast("Fardamento removido.", "info");
+        }
+
+        function renderEfetivo() {
+            const container = document.getElementById('hierarchyRoster');
+            const search = document.getElementById('searchEfetivo').value.toLowerCase();
+            const ranks = [
+                { title: "⚡ GESTOR DE COMANDO", rank: "Gestor", color: "text-amber-400 border-amber-500/30" },
+                { title: "🛡️ SUBGESTOR", rank: "Subgestor", color: "text-rocam-yellow border-rocam-yellow/30" },
+                { title: "🔍 SUPERVISOR", rank: "Supervisor", color: "text-sky-400 border-sky-500/30" },
+                { title: "⭐ ELITE ROCAM", rank: "Elite", color: "text-purple-400 border-purple-500/30" },
+                { title: "🏍️ GRADUADOS", rank: "Graduados", color: "text-emerald-400 border-emerald-500/30" },
+                { title: "🔰 PROBATÓRIOS / ALUNOS", rank: "Probatórios", color: "text-slate-400 border-slate-600" }
+            ];
+
+            const filteredOfficers = state.officers.filter(o => 
+                o.name.toLowerCase().includes(search) || o.passport.includes(search)
+            );
+
+            const canEdit = ["Staff", "Gestor", "Subgestor", "Supervisor"].includes(state.role);
+
+            container.innerHTML = ranks.map(r => {
+                const officersInRank = filteredOfficers.filter(o => o.rank === r.rank);
+                return `
+                    <div class="bg-rocam-card p-4 rounded-xl border border-rocam-border space-y-3">
+                        <div class="flex justify-between items-center border-b border-rocam-border pb-2">
+                            <h3 class="font-oswald text-sm font-bold uppercase ${r.color}">${r.title}</h3>
+                            <span class="text-xs font-mono font-bold text-rocam-muted">${officersInRank.length} Membro(s)</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            ${officersInRank.map(o => `
+                                <div class="p-3 bg-rocam-dark/70 rounded-xl border border-rocam-border flex items-center justify-between text-xs">
+                                    <div>
+                                        <p class="font-bold text-slate-100">${o.name}</p>
+                                        <p class="text-[10px] text-rocam-muted">Badge: ${o.badge} | ID: ${o.passport}</p>
+                                    </div>
+                                    ${canEdit ? `
+                                        <button onclick="deleteOfficer('${o.id}')" class="text-rose-400 p-1 hover:bg-rose-500/10 rounded">
+                                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openOfficerDropdown() {
+            filterOfficerDropdown();
+            document.getElementById('officerDropdownMenu').classList.remove('hidden');
+        }
+
+        function closeOfficerDropdown() {
+            document.getElementById('officerDropdownMenu').classList.add('hidden');
+        }
+
+        function handleGlobalClick(e) {
+            const dropdown = document.getElementById('officerDropdownMenu');
+            const input = document.getElementById('officerSearchInput');
+            if (dropdown && input && !dropdown.contains(e.target) && !input.contains(e.target)) {
+                closeOfficerDropdown();
+            }
+        }
+
+        function filterOfficerDropdown() {
+            const searchInput = document.getElementById('officerSearchInput');
+            if (!searchInput) return;
+            const search = (searchInput.value || '').toLowerCase();
+            const dropdown = document.getElementById('officerDropdownMenu');
+
+            const unselected = state.officers.filter(o => 
+                !selectedOfficerIDs.includes(o.passport) &&
+                (o.name.toLowerCase().includes(search) || o.passport.includes(search))
+            );
+
+            dropdown.innerHTML = unselected.map(o => `
+                <div onclick="addOfficerTag('${o.passport}')" class="p-2 bg-rocam-dark hover:bg-rocam-yellow/20 rounded cursor-pointer flex justify-between text-xs">
+                    <span class="font-bold text-slate-100">${o.name}</span>
+                    <span class="text-rocam-muted">ID: ${o.passport}</span>
+                </div>
+            `).join('');
+        }
+
+        function addOfficerTag(passport) {
+            if (!selectedOfficerIDs.includes(passport)) {
+                selectedOfficerIDs.push(passport);
+                renderOfficerTags();
+                filterOfficerDropdown();
+            }
+        }
+
+        function removeOfficerTag(passport) {
+            selectedOfficerIDs = selectedOfficerIDs.filter(id => id !== passport);
+            renderOfficerTags();
+            filterOfficerDropdown();
+        }
+
+        function renderOfficerTags() {
+            const tagsBox = document.getElementById('selectedOfficersTags');
+            if (!tagsBox) return;
+
+            if (selectedOfficerIDs.length === 0) {
+                tagsBox.innerHTML = `<span class="text-rocam-muted text-[11px] italic">Nenhum oficial selecionado...</span>`;
+                return;
+            }
+
+            tagsBox.innerHTML = selectedOfficerIDs.map(id => `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-rocam-yellow/20 border border-rocam-yellow/40 text-rocam-yellow rounded-lg text-xs font-bold">
+                    <span>${id}</span>
+                    <button type="button" onclick="removeOfficerTag('${id}')" class="text-slate-300 hover:text-rose-400">
+                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                    </button>
+                </span>
+            `).join('');
+            if(window.lucide) lucide.createIcons();
+        }
+
+        function renderArrests() {
+            const container = document.getElementById('arrestsList');
+            const search = document.getElementById('searchArrests').value.toLowerCase();
+
+            const filtered = state.arrests.filter(a => 
+                (a.qru && a.qru.toLowerCase().includes(search)) || a.bo.toLowerCase().includes(search)
+            );
+
+            container.innerHTML = filtered.slice().reverse().map(a => `
+                <div class="p-4 bg-rocam-dark/70 rounded-xl border border-rocam-border flex items-center justify-between text-xs">
+                    <div>
+                        <h4 class="font-bold text-slate-100">${a.qru || 'Ocorrência'}</h4>
+                        <p class="text-rocam-muted">BO: ${a.bo} | Oficiais: ${a.officersIDs}</p>
+                    </div>
+                    <span class="px-2 py-0.5 rounded font-bold ${a.outcome === 'Sucesso' ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10'}">${a.outcome}</span>
+                </div>
+            `).join('');
+        }
+
+        function saveArrest(e) {
+            e.preventDefault();
+            const qru = document.getElementById('arrestQRU').value.trim();
+            const passport = document.getElementById('arrestPassaporte').value.trim();
+            const bo = document.getElementById('arrestBO').value.trim();
+            const unidade = document.getElementById('arrestUnidade').value.trim();
+            const outcome = document.getElementById('arrestOutcome').value;
+
+            if(selectedOfficerIDs.length === 0) {
+                showToast("Selecione ao menos um oficial participante!", "error");
+                return;
+            }
+
+            state.arrests.push({
+                id: Date.now(),
+                qru,
+                passport,
+                bo,
+                unidade,
+                outcome,
+                officersIDs: selectedOfficerIDs.join(', '),
+                date: new Date().toLocaleDateString('pt-BR')
+            });
+
+            saveState();
+            document.getElementById('formArrest').reset();
+            selectedOfficerIDs = [];
+            renderOfficerTags();
+            showToast("Registro prisional salvo com sucesso!", "success");
+        }
+
+        function submitEvalRequest(e) {
+            e.preventDefault();
+            const studentName = document.getElementById('reqStudentName').value.trim();
+            const studentPassport = document.getElementById('reqStudentPassport').value.trim();
+
+            state.evalRequests.push({
+                id: Date.now().toString(),
+                studentName,
+                studentPassport,
+                startTime: document.getElementById('reqStartTime').value,
+                endTime: document.getElementById('reqEndTime').value,
+                date: document.getElementById('reqDate').value,
+                dept: document.getElementById('reqDept').value.trim(),
+                evaluatorTarget: document.getElementById('reqEvaluatorTarget').value.trim(),
+                status: 'Pendente'
+            });
+
+            saveState();
+            document.getElementById('formStudentEvalRequest').reset();
+            showToast("Solicitação de PTR enviada para a fila!", "success");
+        }
+
+        function renderStudentEvalModule() {
+            const listContainer = document.getElementById('pendingEvalListContainer');
+            const pendingList = state.evalRequests.filter(r => r.status === 'Pendente');
+
+            if (pendingList.length === 0) {
+                listContainer.innerHTML = `<p class="text-xs text-rocam-muted italic py-8 text-center">Nenhuma solicitação pendente.</p>`;
+            } else {
+                listContainer.innerHTML = pendingList.map(r => `
+                    <div class="p-3 bg-rocam-dark/80 rounded-xl border border-rocam-border text-xs space-y-2">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-bold text-slate-100">${r.studentName} (ID: ${r.studentPassport})</h4>
+                                <p class="text-rocam-muted">Instrutor: ${r.evaluatorTarget}</p>
+                            </div>
+                            <button onclick="openEvalModal('${r.id}')" class="px-3 py-1.5 bg-emerald-500/20 text-emerald-400 font-bold rounded">
+                                Avaliar PTR
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function openEvalModal(reqId) {
+            const req = state.evalRequests.find(r => r.id === reqId);
+            if (!req) return;
+
+            document.getElementById('activeEvalReqId').value = req.id;
+            document.getElementById('dispStudent').textContent = `${req.studentName} (ID: ${req.studentPassport})`;
+
+            const qContainer = document.getElementById('questionnaireContainer');
+            qContainer.innerHTML = state.questions.map((q, idx) => `
+                <div class="p-2.5 bg-rocam-dark rounded-xl border border-rocam-border space-y-2">
+                    <span class="text-xs font-semibold text-slate-100">${idx + 1}. ${q}</span>
+                    <input type="hidden" id="q_score_${idx}" value="10">
+                    <input type="text" id="q_comment_${idx}" placeholder="Observação..." class="w-full bg-rocam-hover border border-rocam-border rounded p-1.5 text-[11px] text-slate-200">
+                </div>
+            `).join('');
+
+            openModal('modalEvalStudent');
+        }
+
+        function finalizeEvaluation(e) {
+            e.preventDefault();
+            const reqId = document.getElementById('activeEvalReqId').value;
+            const req = state.evalRequests.find(r => r.id === reqId);
+            if (!req) return;
+
+            req.status = 'Concluído';
+            state.completedEvals.push({
+                id: Date.now(),
+                studentName: req.studentName,
+                studentPassport: req.studentPassport,
+                evaluator: state.role,
+                averageScore: "10",
+                date: req.date
+            });
+
+            saveState();
+            closeModal('modalEvalStudent');
+            showToast("Avaliação concluída e salva!", "success");
+        }
+
+        function renderDetailedEvaluations() {
+            const container = document.getElementById('detailedEvaluationsContainer');
+            if(!container) return;
+
+            container.innerHTML = state.completedEvals.map(e => `
+                <div class="p-4 bg-rocam-dark rounded-xl border border-rocam-border text-xs space-y-1">
+                    <h4 class="font-bold text-slate-100">${e.studentName} (ID: ${e.studentPassport})</h4>
+                    <p class="text-rocam-muted">Avaliador: ${e.evaluator} | Data: ${e.date}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderAbsences() {
+            const container = document.getElementById('absencesList');
+            container.innerHTML = state.absences.map(a => `
+                <div class="p-3 bg-rocam-dark rounded-xl border border-rocam-border text-xs flex justify-between">
+                    <div>
+                        <p class="font-bold text-slate-100">${a.officer} (ID: ${a.passport})</p>
+                        <p class="text-rocam-muted">Período: ${a.startDate} a ${a.endDate}</p>
+                    </div>
+                    <span class="font-bold text-amber-400">${a.status}</span>
+                </div>
+            `).join('');
+        }
+
+        function saveAbsence(e) {
+            e.preventDefault();
+            state.absences.push({
+                id: Date.now(),
+                officer: document.getElementById('absOfficer').value.trim(),
+                passport: document.getElementById('absPassport').value.trim(),
+                startDate: document.getElementById('absStartDate').value,
+                endDate: document.getElementById('absEndDate').value,
+                reason: document.getElementById('absReason').value.trim(),
+                status: 'Pendente'
+            });
+
+            saveState();
+            document.getElementById('formAbsence').reset();
+            showToast("Solicitação de ausência enviada!", "success");
+        }
+
+        function renderPromotionsAndWarnings() {
+            const promoContainer = document.getElementById('promotionsList');
+            promoContainer.innerHTML = state.promotions.map(p => `
+                <div class="p-3 bg-rocam-dark rounded-xl border border-rocam-border text-xs flex justify-between">
+                    <div>
+                        <p class="font-bold text-slate-100">${p.officerName}</p>
+                        <p class="text-rocam-yellow font-bold">${p.newRank}</p>
+                    </div>
+                    <span class="font-bold text-emerald-400">${p.status}</span>
+                </div>
+            `).join('');
+
+            const warnContainer = document.getElementById('warningsList');
+            warnContainer.innerHTML = state.warnings.map(w => `
+                <div class="p-3 bg-rocam-dark rounded-xl border border-rocam-border text-xs flex justify-between">
+                    <p class="font-bold text-slate-100">${w.officerName} (${w.level})</p>
+                    <span class="text-rocam-muted">${w.date}</span>
+                </div>
+            `).join('');
+        }
+
+        function savePromotionRequest(e) {
+            e.preventDefault();
+            const officerId = document.getElementById('promoReqOfficerSelect').value;
+            const officer = state.officers.find(o => o.id === officerId);
+            if(officer) {
+                state.promotions.push({
+                    id: Date.now(),
+                    officerId: officer.id,
+                    officerName: officer.name,
+                    newRank: document.getElementById('promoReqNewRank').value,
+                    status: 'Pendente',
+                    date: new Date().toLocaleDateString('pt-BR')
+                });
+                saveState();
+                closeModal('modalPromoRequest');
+                showToast("Solicitação de promoção enviada!", "success");
+            }
+        }
+
+        function renderQuestionsEdit() {
+            const container = document.getElementById('questionsEditList');
+            container.innerHTML = state.questions.map((q, idx) => `
+                <div class="p-3 bg-rocam-dark rounded border border-rocam-border text-xs flex justify-between">
+                    <span>${idx + 1}. ${q}</span>
+                    <button onclick="removeQuestion(${idx})" class="text-rose-400"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addQuestionPrompt() {
+            const q = prompt("Nova pergunta para o questionário:");
+            if(q && q.trim()) {
+                state.questions.push(q.trim());
+                saveState();
+                showToast("Pergunta adicionada com sucesso!", "success");
+            }
+        }
+
+        function removeQuestion(idx) {
+            state.questions.splice(idx, 1);
+            saveState();
+            showToast("Pergunta removida.", "info");
+        }
+
+        function saveOfficer(e) {
+            e.preventDefault();
+            state.officers.push({
+                id: Date.now().toString(),
+                name: document.getElementById('offName').value.trim(),
+                passport: document.getElementById('offPassport').value.trim(),
+                badge: document.getElementById('offBadge').value.trim(),
+                rank: document.getElementById('offRank').value,
+                status: document.getElementById('offStatus').value
+            });
+            saveState();
+            closeModal('modalOfficer');
+            showToast("Oficial cadastrado com sucesso!", "success");
+        }
+
+        function deleteOfficer(id) {
+            state.officers = state.officers.filter(o => o.id !== id);
+            saveState();
+            showToast("Oficial removido.", "info");
+        }
+
+        function saveWarning(e) {
+            e.preventDefault();
+            const officerId = document.getElementById('warnOfficerSelect').value;
+            const officer = state.officers.find(o => o.id === officerId);
+            if(officer) {
+                state.warnings.push({
+                    id: Date.now(),
+                    officerName: officer.name,
+                    level: document.getElementById('warnLevel').value,
+                    reason: document.getElementById('warnReason').value.trim(),
+                    date: new Date().toLocaleDateString('pt-BR')
+                });
+                saveState();
+                closeModal('modalWarning');
+                showToast("Advertência aplicada!", "success");
+            }
+        }
+
+        function populateSelects() {
+            const promoSelect = document.getElementById('promoReqOfficerSelect');
+            const warnSelect = document.getElementById('warnOfficerSelect');
+            const options = state.officers.map(o => `<option value="${o.id}">${o.name} (ID: ${o.passport})</option>`).join('');
+            if(promoSelect) promoSelect.innerHTML = options || `<option>Sem oficiais</option>`;
+            if(warnSelect) warnSelect.innerHTML = options || `<option>Sem oficiais</option>`;
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        /* LIVE CLOCK */
+        setInterval(() => {
+            const clockEl = document.getElementById('liveClock');
+            if(clockEl) clockEl.textContent = new Date().toLocaleTimeString('pt-BR');
+        }, 1000);
+
+        /* INITIALIZATION ON LOAD */
+        window.onload = function() {
+            loadState();
+            checkDiscordOAuthHash();
+            checkAuthGuard();
+            changeRole("Staff");
+            updateUI();
+        };
+    </script>
+</body>
+</html>
