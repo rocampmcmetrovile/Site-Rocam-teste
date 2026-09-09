@@ -97,16 +97,17 @@
                     Entrar com Discord
                 </button>
 
-                <button onclick="toggleDiscordConfigModal()" class="w-full py-2.5 px-4 bg-rocam-hover hover:bg-rocam-border text-rocam-muted hover:text-slate-200 font-semibold rounded-xl text-xs transition-colors flex items-center justify-center gap-2">
+                <button onclick="toggleDiscordConfigModal()" class="w-full py-2.5 px-4 bg-rocam-hover hover:bg-rocam-border text-rocam-yellow border border-rocam-yellow/30 font-semibold rounded-xl text-xs transition-colors flex items-center justify-center gap-2">
                     <i data-lucide="settings" class="w-4 h-4"></i> Configurar Discord Client ID
                 </button>
             </div>
 
             <!-- Demo Login Alternative for Testing -->
-            <div class="pt-4 border-t border-rocam-border/60">
-                <button onclick="loginDemoMode()" class="text-[11px] text-rocam-yellow hover:underline font-semibold flex items-center justify-center gap-1 mx-auto">
-                    <i data-lucide="key" class="w-3.5 h-3.5"></i> Entrar em Modo de Teste / Dev Local
+            <div class="pt-4 border-t border-rocam-border/60 space-y-1">
+                <button onclick="loginDemoMode()" class="text-xs text-emerald-400 hover:underline font-bold flex items-center justify-center gap-1 mx-auto">
+                    <i data-lucide="key" class="w-3.5 h-3.5"></i> Entrar sem Discord (Modo de Teste)
                 </button>
+                <p class="text-[10px] text-rocam-muted">Use o modo de teste enquanto configura seu app do Discord.</p>
             </div>
         </div>
     </div>
@@ -785,24 +786,35 @@
 
     <!-- Modal: Discord OAuth App Configuration -->
     <div id="modalDiscordConfig" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-rocam-card border border-rocam-discord w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl">
+        <div class="bg-rocam-card border border-rocam-discord w-full max-w-lg rounded-2xl p-5 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b border-rocam-border pb-3">
                 <h3 class="font-oswald text-base font-bold text-rocam-discord flex items-center gap-2">
                     <i data-lucide="settings" class="w-5 h-5"></i> Configuração do Discord Client ID
                 </h3>
                 <button onclick="toggleDiscordConfigModal()" class="text-rocam-muted hover:text-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
+            
             <div class="space-y-3 text-xs">
+                <div class="p-3 bg-rocam-dark rounded-xl border border-rocam-border space-y-1.5 text-[11px] text-slate-300">
+                    <p class="font-bold text-rocam-yellow">Como obter seu Client ID no Discord:</p>
+                    <ol class="list-decimal list-inside space-y-1 text-rocam-muted">
+                        <li>Acesse <a href="https://discord.com/developers/applications" target="_blank" class="text-rocam-discord underline font-bold">discord.com/developers/applications</a></li>
+                        <li>Crie uma nova aplicação e abra a aba <strong class="text-slate-200">OAuth2</strong>.</li>
+                        <li>Copie o <strong class="text-slate-200">Client ID</strong> e cole abaixo.</li>
+                        <li>Em <strong class="text-slate-200">Redirects</strong>, adicione o link do seu site exatamente como exibido abaixo.</li>
+                    </ol>
+                </div>
+
                 <div>
                     <label class="block font-semibold text-slate-300 mb-1">Discord Application Client ID *</label>
-                    <input type="text" id="discordClientIdInput" placeholder="Ex: 123456789012345678" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-discord font-mono">
+                    <input type="text" id="discordClientIdInput" placeholder="Ex: 1234567890123456789" class="w-full bg-rocam-dark border border-rocam-border rounded-lg p-2.5 outline-none focus:border-rocam-discord font-mono text-xs text-rocam-yellow">
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Redirect URI Automático (Copie para o Developer Portal)</label>
-                    <input type="text" id="discordRedirectUriDisplay" readonly class="w-full bg-rocam-dark/70 border border-rocam-border rounded-lg p-2.5 outline-none font-mono text-[11px] text-rocam-yellow">
+                    <label class="block font-semibold text-slate-300 mb-1">Redirect URI (Copie e cole na aba OAuth2 do Discord Developer Portal)</label>
+                    <input type="text" id="discordRedirectUriDisplay" readonly class="w-full bg-rocam-dark/70 border border-rocam-border rounded-lg p-2.5 outline-none font-mono text-[11px] text-emerald-400 select-all">
                 </div>
                 <button onclick="saveDiscordConfig()" class="w-full py-2.5 bg-rocam-discord hover:bg-rocam-discordHover text-white font-bold rounded-lg transition-all shadow-md">
-                    Salvar Configuração do Discord
+                    Salvar e Ativar Login do Discord
                 </button>
             </div>
         </div>
@@ -1131,8 +1143,13 @@
         }
 
         function loginWithDiscord() {
+            const clientId = (state.discordClientId || "").trim();
+            if (!clientId || clientId === "123456789012345678") {
+                showToast("Por favor, configure o seu Client ID do Discord primeiro!", "error");
+                toggleDiscordConfigModal();
+                return;
+            }
             const redirectUri = encodeURIComponent(window.location.origin + window.location.pathname);
-            const clientId = state.discordClientId || "123456789012345678";
             const oauthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
             window.location.href = oauthUrl;
         }
