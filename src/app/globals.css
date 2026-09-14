@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b0c10;
+  --foreground: #e2e8f0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-oswald: var(--font-oswald);
+
+  --color-rocam-yellow: #ffbe00;
+  --color-rocam-gold: #d4af37;
+  --color-rocam-dark: #0b0c10;
+  --color-rocam-card: #14161d;
+  --color-rocam-hover: #1e222d;
+  --color-rocam-border: #2a2e3d;
+  --color-rocam-muted: #8e95a5;
+  --color-rocam-discord: #5865f2;
+  --color-rocam-discordHover: #4752c4;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
+
+.font-oswald {
+  font-family: var(--font-oswald), sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0c10;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2e3d;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffbe00;
+}
+
+.glow-yellow {
+  box-shadow: 0 0 25px rgba(255, 190, 0, 0.25);
+}
+.glow-discord {
+  box-shadow: 0 0 25px rgba(88, 101, 242, 0.3);
+}
