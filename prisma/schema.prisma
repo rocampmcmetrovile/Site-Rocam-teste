@@ -1,0 +1,275 @@
+// ROCAM Metroville — Prisma schema
+// Database: Neon (Postgres). See /.env.example for required connection strings.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Connection URLs are configured in `prisma.config.ts` (CLI/migrations)
+  // and passed to the `@prisma/adapter-neon` driver adapter at runtime
+  // (see src/lib/db.ts) — Prisma 7 no longer reads `url`/`directUrl` here.
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+/// Rank hierarchy, from highest to lowest authority.
+/// Mirrors the Discord guild roles mapped via ROLE_ID_MAP.
+enum Rank {
+  STAFF
+  GESTOR
+  SUBGESTOR
+  SUPERVISOR
+  ELITE
+  GRADUADOS
+  PROBATORIOS
+}
+
+enum OfficerStatus {
+  ATIVO
+  LICENCA
+  INATIVO
+}
+
+enum ArrestOutcome {
+  SUCESSO
+  SEM_SUCESSO
+}
+
+enum RequestStatus {
+  PENDENTE
+  APROVADO
+  REJEITADO
+}
+
+enum EvalRequestStatus {
+  PENDENTE
+  CONCLUIDO
+}
+
+enum WarningLevel {
+  LEVE
+  MEDIA
+  GRAVE
+}
+
+enum ActivityLogType {
+  SISTEMA
+  STAFF
+  EFETIVO
+  PRISIONAL
+  AVALIACAO
+  AUSENCIA
+  PROMOCAO
+  PUNICAO
+  FARDAMENTO
+}
+
+// ---------------------------------------------------------------------------
+// Application domain models
+// ---------------------------------------------------------------------------
+
+/// A logged-in application user, sourced from Discord OAuth + guild role sync.
+/// `rank` is the source of truth for authorization (refreshed on every login,
+/// stored here rather than only in the JWT so it survives token refreshes and
+/// can be audited/revoked server-side). We use NextAuth's JWT session
+/// strategy (no Account/Session tables needed) since this app has exactly
+/// one identity provider (Discord) and no email-based features.
+///
+/// This model also doubles as the "Efetivo" roster entry (formerly a
+/// separate `Officer` table) — every roster member must have logged in with
+/// Discord at least once. `passport` is null until the person completes the
+/// mandatory onboarding form on first login (see src/app/onboarding); until
+/// then they're an authenticated account but not yet a full roster member.
+model User {
+  id            String   @id @default(cuid())
+  discordId     String   @unique
+  /// Discord global display name (OAuth `profile.username`/`global_name`).
+  /// Used only as a last-resort display fallback — see resolveDisplayName().
+  username      String
+  /// Guild-specific nickname ("apelido"), refreshed on every login via the
+  /// bot API. Preferred display name whenever it's set.
+  discordNick   String?
+  avatarUrl     String?
+  rank          Rank     @default(PROBATORIOS)
+  isStaffMaster Boolean  @default(false)
+
+  // --- roster / "Efetivo" fields (formerly the separate `Officer` model) ---
+  /// In-game character name ("Nome IC"), collected during onboarding.
+  characterName String?
+  /// In-game passport/RG number. Null until onboarding is completed —
+  /// `passport IS NOT NULL` is how we tell "full roster member" apart from
+  /// "logged in, still onboarding".
+  passport      String?       @unique
+  badge         String?
+  status        OfficerStatus @default(ATIVO)
+  arrestsCount  Int           @default(0)
+  warningsCount Int           @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  activityLogs ActivityLog[]
+  arrests      ArrestOfficer[]
+  promotions   Promotion[]
+  warnings     Warning[]
+
+  @@index([rank])
+  @@index([status])
+}
+
+model Arrest {
+  id           String        @id @default(cuid())
+  qru          String
+  passport     String
+  bo           String
+  unidade      String
+  outcome      ArrestOutcome @default(SUCESSO)
+  imageUrl     String?
+  date         DateTime      @default(now())
+  createdAt    DateTime      @default(now())
+
+  officers ArrestOfficer[]
+
+  @@index([outcome])
+  @@index([date])
+}
+
+/// Join table: many-to-many between Arrest and User (participants).
+model ArrestOfficer {
+  arrestId String
+  userId   String
+
+  arrest Arrest @relation(fields: [arrestId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([arrestId, userId])
+}
+
+/// A pending request for a PTR (probationary officer evaluation).
+model EvalRequest {
+  id               String            @id @default(cuid())
+  studentName      String
+  studentPassport  String
+  startTime        String
+  endTime          String
+  date             String
+  dept             String
+  evaluatorTarget  String
+  status           EvalRequestStatus @default(PENDENTE)
+  createdAt        DateTime          @default(now())
+
+  completedEval CompletedEval?
+
+  @@index([status])
+}
+
+model CompletedEval {
+  id              String   @id @default(cuid())
+  evalRequestId   String   @unique
+  studentName     String
+  studentPassport String
+  evaluator       String
+  averageScore    String
+  date            String
+  createdAt       DateTime @default(now())
+
+  evalRequest EvalRequest  @relation(fields: [evalRequestId], references: [id], onDelete: Cascade)
+  answers     EvalAnswer[]
+}
+
+model EvalAnswer {
+  id              String @id @default(cuid())
+  completedEvalId String
+  questionText    String
+  score           Int
+  comment         String?
+
+  completedEval CompletedEval @relation(fields: [completedEvalId], references: [id], onDelete: Cascade)
+}
+
+model Absence {
+  id        String        @id @default(cuid())
+  officer   String
+  passport  String
+  startDate String
+  endDate   String
+  reason    String
+  status    RequestStatus @default(PENDENTE)
+  createdAt DateTime      @default(now())
+
+  @@index([status])
+}
+
+model Promotion {
+  id          String        @id @default(cuid())
+  userId      String?
+  officerName String
+  newRank     Rank
+  status      RequestStatus @default(PENDENTE)
+  date        String
+  createdAt   DateTime      @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+}
+
+model Warning {
+  id          String       @id @default(cuid())
+  userId      String?
+  officerName String
+  level       WarningLevel
+  reason      String
+  date        String
+  createdAt   DateTime     @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([level])
+}
+
+model Uniform {
+  id        String   @id @default(cuid())
+  title     String
+  badge     String
+  imageUrl  String
+  details   String   @db.Text
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  text      String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model StaffMember {
+  id            String   @id @default(cuid())
+  name          String
+  passport      String
+  discordHandle String
+  cargo         String
+  createdAt     DateTime @default(now())
+}
+
+model ActivityLog {
+  id            String          @id @default(cuid())
+  type          ActivityLogType @default(SISTEMA)
+  title         String
+  detail        String
+  userRankAtTime Rank?
+  userId        String?
+  timestamp     DateTime        @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([type])
+  @@index([timestamp])
+}
